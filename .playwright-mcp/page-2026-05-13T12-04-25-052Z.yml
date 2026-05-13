@@ -1,0 +1,27 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e8]:
+      - button "back" [ref=e11] [cursor=pointer]:
+        - generic [ref=e12]:
+          - img:
+            - generic:
+              - img
+      - generic [ref=e15]:
+        - generic: Workout History
+      - generic "Login/Signup" [ref=e17]:
+        - button [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]:
+            - generic:
+              - img:
+                - generic:
+                  - img
+  - main [ref=e20]:
+    - generic [ref=e23]:
+      - img [ref=e24]:
+        - img [ref=e26]
+      - heading "No Workout History" [level=4] [ref=e29]
+      - paragraph [ref=e30]: Complete your first workout to see it here!
+      - link "Start a Workout" [ref=e32] [cursor=pointer]:
+        - /url: /hiit-timer
+        - generic [ref=e33]:
+          - generic: Start a Workout

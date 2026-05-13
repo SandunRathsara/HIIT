@@ -1,0 +1,79 @@
+<h2>Architecture — Component Tree</h2>
+<p class="subtitle">Approach B: custom hook owns logic, thin components own display</p>
+
+<div class="mockup">
+  <div class="mockup-header">App Structure</div>
+  <div class="mockup-body" style="font-family: monospace; font-size: 13px; line-height: 1.8; padding: 8px 0;">
+
+    <div style="display: flex; gap: 32px; flex-wrap: wrap;">
+
+      <!-- Hook box -->
+      <div style="flex: 1; min-width: 220px;">
+        <div style="background: #0d3349; border: 1px solid #17b8a3; border-radius: 8px; padding: 16px;">
+          <div style="color: #17b8a3; font-weight: 700; font-size: 14px; margin-bottom: 12px;">🪝 useHiitTimer (hook)</div>
+          <div style="color: #adc; font-size: 12px; line-height: 1.9;">
+            <div>• Timer state machine</div>
+            <div style="padding-left: 12px; color: #7bb;">prep → work → rest → done</div>
+            <div>• Tick logic (setInterval)</div>
+            <div>• Settings (work/rest/rounds/delay)</div>
+            <div>• localStorage read/write</div>
+            <div>• Web Speech API calls</div>
+            <div>• Returns: { state, timeLeft,</div>
+            <div style="padding-left: 12px;">  currentRound, phase, settings,</div>
+            <div style="padding-left: 12px;">  start, pause, reset, update }</div>
+          </div>
+        </div>
+        <div style="text-align: center; color: #17b8a3; font-size: 18px; margin: 4px 0;">↓ used by</div>
+        <div style="background: #0a1e2e; border: 1px solid #2d5a78; border-radius: 8px; padding: 10px 16px; color: #aaa; font-size: 12px;">
+          <strong style="color: #ccc;">App.jsx</strong> — composes hook + components
+        </div>
+      </div>
+
+      <!-- Components box -->
+      <div style="flex: 1; min-width: 220px;">
+        <div style="color: #17b8a3; font-weight: 700; font-size: 14px; margin-bottom: 10px;">📦 UI Components</div>
+
+        <div style="background: #0a1e2e; border: 1px solid #2d5a78; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px;">
+          <strong style="color: #ccc; font-size: 13px;">TimerDisplay</strong>
+          <div style="color: #7bb; font-size: 12px; margin-top: 4px;">Big countdown, phase label (WORK/REST/PREP), round indicator, progress ring</div>
+        </div>
+
+        <div style="background: #0a1e2e; border: 1px solid #2d5a78; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px;">
+          <strong style="color: #ccc; font-size: 13px;">ControlButtons</strong>
+          <div style="color: #7bb; font-size: 12px; margin-top: 4px;">Start / Pause / Reset buttons, driven by timer state</div>
+        </div>
+
+        <div style="background: #0a1e2e; border: 1px solid #2d5a78; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px;">
+          <strong style="color: #ccc; font-size: 13px;">SettingsPanel</strong>
+          <div style="color: #7bb; font-size: 12px; margin-top: 4px;">Work time, Rest time, Rounds, Prepare delay — +/- controls + sliders</div>
+        </div>
+
+        <div style="background: #0a1e2e; border: 1px solid #2d5a78; border-radius: 8px; padding: 12px 16px;">
+          <strong style="color: #ccc; font-size: 13px;">ProgressBar</strong>
+          <div style="color: #7bb; font-size: 12px; margin-top: 4px;">Visual strip showing progress through current interval</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- State machine -->
+    <div style="margin-top: 20px; background: #0a1e2e; border: 1px solid #2d5a78; border-radius: 8px; padding: 14px 16px;">
+      <div style="color: #17b8a3; font-weight: 700; font-size: 13px; margin-bottom: 8px;">Timer State Machine</div>
+      <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; color: #ccc; font-size: 13px;">
+        <span style="background: #0d3349; border: 1px solid #17b8a3; padding: 4px 10px; border-radius: 4px;">idle</span>
+        <span style="color: #17b8a3;">→ start →</span>
+        <span style="background: #0d3349; border: 1px solid #f59e0b; padding: 4px 10px; border-radius: 4px;">prep</span>
+        <span style="color: #17b8a3;">→ 5s →</span>
+        <span style="background: #0d3349; border: 1px solid #22c55e; padding: 4px 10px; border-radius: 4px;">work</span>
+        <span style="color: #17b8a3;">→ done →</span>
+        <span style="background: #0d3349; border: 1px solid #3b82f6; padding: 4px 10px; border-radius: 4px;">rest</span>
+        <span style="color: #17b8a3;">→ repeat ×rounds →</span>
+        <span style="background: #0d3349; border: 1px solid #a855f7; padding: 4px 10px; border-radius: 4px;">done</span>
+      </div>
+      <div style="color: #7bb; font-size: 12px; margin-top: 8px;">pause/reset available from any active state</div>
+    </div>
+
+  </div>
+</div>
+
+<p style="margin-top: 16px; color: #aaa; font-size: 13px;">Does this architecture look right? Let me know in the terminal.</p>

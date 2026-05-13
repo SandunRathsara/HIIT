@@ -1,0 +1,132 @@
+- generic [ref=e3]:
+  - generic:
+    - navigation "menu" [ref=e4]:
+      - generic [ref=e5]:
+        - generic:
+          - generic [ref=e10]:
+            - generic: Menu
+          - list [ref=e14]:
+            - listitem [ref=e16]:
+              - link "Simple HIIT Timer" [ref=e17] [cursor=pointer]:
+                - /url: /hiit-timer
+                - img [ref=e18]:
+                  - img [ref=e20]
+                - generic [ref=e24]: Simple HIIT Timer
+            - listitem [ref=e26]:
+              - link "Workout History" [ref=e27] [cursor=pointer]:
+                - /url: /workout-history
+                - img [ref=e28]:
+                  - img [ref=e30]
+                - generic [ref=e37]: Workout History
+            - listitem [ref=e39]:
+              - link "Blogs" [ref=e40] [cursor=pointer]:
+                - /url: /blog
+                - img [ref=e41]:
+                  - img [ref=e43]
+                - generic [ref=e47]: Blogs
+            - listitem [ref=e49]:
+              - link "Privacy Policy" [ref=e50] [cursor=pointer]:
+                - /url: /privacy-policy
+                - img [ref=e51]:
+                  - img [ref=e53]
+                - generic [ref=e57]: Privacy Policy
+            - listitem [ref=e59]:
+              - link "Feedback" [ref=e60] [cursor=pointer]:
+                - /url: /feedback
+                - img [ref=e61]:
+                  - img [ref=e63]
+                - generic [ref=e70]: Feedback
+            - listitem [ref=e72]:
+              - link "About Us" [ref=e73] [cursor=pointer]:
+                - /url: /about-us
+                - img [ref=e74]:
+                  - img [ref=e76]
+                - generic [ref=e80]: About Us
+    - generic [ref=e82]:
+      - banner [ref=e83]:
+        - generic [ref=e85]:
+          - generic [ref=e88]:
+            - generic: Simple HIIT Timer
+          - generic "View Workout History" [ref=e90]:
+            - link [ref=e91] [cursor=pointer]:
+              - /url: /workout-history
+              - generic [ref=e92]:
+                - generic:
+                  - img:
+                    - generic:
+                      - img
+      - main [ref=e93]:
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - generic [ref=e98]: WORK
+            - generic [ref=e99]:
+              - button [ref=e101] [cursor=pointer]:
+                - generic [ref=e102]:
+                  - generic:
+                    - img:
+                      - generic:
+                        - img
+              - spinbutton [ref=e103]: "30"
+              - button [ref=e105] [cursor=pointer]:
+                - generic [ref=e106]:
+                  - generic:
+                    - img:
+                      - generic:
+                        - img
+            - slider "Work Time" [ref=e112]
+          - generic [ref=e113]:
+            - generic [ref=e114]: REST
+            - generic [ref=e115]:
+              - button [ref=e117] [cursor=pointer]:
+                - generic [ref=e118]:
+                  - generic:
+                    - img:
+                      - generic:
+                        - img
+              - spinbutton [ref=e119]: "30"
+              - button [ref=e121] [cursor=pointer]:
+                - generic [ref=e122]:
+                  - generic:
+                    - img:
+                      - generic:
+                        - img
+            - slider "Rest Time" [ref=e128]
+          - generic [ref=e129]:
+            - generic [ref=e130]: ROUNDS
+            - generic [ref=e131]:
+              - button [ref=e133] [cursor=pointer]:
+                - generic [ref=e134]:
+                  - generic:
+                    - img:
+                      - generic:
+                        - img
+              - generic [ref=e135]: "4"
+              - button [ref=e137] [cursor=pointer]:
+                - generic [ref=e138]:
+                  - generic:
+                    - img:
+                      - generic:
+                        - img
+            - slider "Number of Rounds" [ref=e144]
+          - generic [ref=e145]:
+            - generic [ref=e146]:
+              - generic [ref=e147]:
+                - img [ref=e148]:
+                  - img [ref=e150]
+                - generic [ref=e154]: Sound
+              - switch "Enable or disable sound" [checked] [ref=e155] [cursor=pointer]
+            - generic [ref=e161]:
+              - generic [ref=e162]:
+                - img [ref=e163]:
+                  - img [ref=e165]
+                - generic [ref=e168]: Initial Delay (5s)
+              - switch "Enable or disable initial 5 second delay" [ref=e169] [cursor=pointer]
+            - generic [ref=e175]:
+              - generic [ref=e176]:
+                - img [ref=e177]:
+                  - img [ref=e179]
+                - generic [ref=e182]: Motivator
+              - switch "Enable or disable AI motivational messages during workout" [checked] [ref=e183] [cursor=pointer]
+          - button "START" [ref=e190] [cursor=pointer]:
+            - generic [ref=e191]:
+              - generic: START
