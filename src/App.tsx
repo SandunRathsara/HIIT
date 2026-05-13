@@ -1,21 +1,52 @@
-import { Button } from "@/components/ui/button"
+import { useHiitTimer } from '@/hooks/useHiitTimer'
+import { TimerDisplay } from '@/components/TimerDisplay'
+import { ProgressBar } from '@/components/ProgressBar'
+import { ControlButtons } from '@/components/ControlButtons'
+import { SettingsPanel } from '@/components/SettingsPanel'
+import type { Phase } from '@/hooks/useHiitTimer'
 
-export function App() {
+function getPhaseTotalTime(phase: Phase, settings: { workTime: number; restTime: number }): number {
+  if (phase === 'prep') return 5
+  if (phase === 'work') return settings.workTime
+  if (phase === 'rest') return settings.restTime
+  return 0
+}
+
+export default function App() {
+  const { phase, timeLeft, currentRound, settings, isRunning, start, pause, reset, updateSetting } = useHiitTimer()
+  const isLocked = phase !== 'idle'
+  const totalTime = getPhaseTotalTime(phase, settings)
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+    <div className="min-h-screen bg-[#0d1b2a] flex items-start justify-center">
+      <div className="w-full max-w-sm flex flex-col min-h-screen">
+        <div className="bg-slate-950 px-5 py-4 text-center border-b border-slate-800">
+          <h1 className="text-teal-400 font-extrabold text-sm tracking-[3px] uppercase">
+            HIIT TIMER
+          </h1>
         </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
+        <div className="flex-1 flex flex-col">
+          <TimerDisplay
+            phase={phase}
+            timeLeft={timeLeft}
+            currentRound={currentRound}
+            totalRounds={settings.rounds}
+          />
+          <ProgressBar phase={phase} timeLeft={timeLeft} totalTime={totalTime} />
+          <ControlButtons
+            phase={phase}
+            isRunning={isRunning}
+            onStart={start}
+            onPause={pause}
+            onReset={reset}
+          />
+          <SettingsPanel
+            settings={settings}
+            isLocked={isLocked}
+            onUpdate={updateSetting}
+          />
         </div>
       </div>
     </div>
   )
 }
-
-export default App
