@@ -1,0 +1,11 @@
+- generic [ref=e4]:
+  - heading "HIIT TIMER" [level=1] [ref=e6]
+  - generic [ref=e7]:
+    - generic [ref=e8]:
+      - generic [ref=e9]: ●GET READY
+      - generic [ref=e10]: 00:03
+      - generic [ref=e11]: ROUND 1 / 4
+    - generic [ref=e13]:
+      - button "PAUSE" [ref=e48]
+      - button "↺" [ref=e49]
+    - paragraph [ref=e16]: Settings locked during workout
