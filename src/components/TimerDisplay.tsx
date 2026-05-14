@@ -1,3 +1,10 @@
+import {
+  CircularProgress,
+  CircularProgressIndicator,
+  CircularProgressTrack,
+  CircularProgressRange,
+  CircularProgressValueText,
+} from '@/components/ui/circular-progress'
 import { cn } from '@/lib/utils'
 import type { Phase } from '@/hooks/useHiitTimer'
 
@@ -33,9 +40,6 @@ const PHASE_LABELS: Record<Phase, string> = {
   done: 'DONE!',
 }
 
-const RING_R = 108
-const CIRC = 2 * Math.PI * RING_R
-
 export function TimerDisplay({ phase, timeLeft, currentRound, totalRounds, totalTime = 0 }: TimerDisplayProps) {
   const mm = Math.floor(timeLeft / 60).toString().padStart(2, '0')
   const ss = (timeLeft % 60).toString().padStart(2, '0')
@@ -44,7 +48,6 @@ export function TimerDisplay({ phase, timeLeft, currentRound, totalRounds, total
     ? 100
     : totalTime > 0 ? ((totalTime - timeLeft) / totalTime) * 100 : 0
 
-  const offset = CIRC * (1 - pct / 100)
   const color = RING_COLOR[phase]
   const isCountdown = timeLeft <= 3 && timeLeft > 0 && phase !== 'idle' && phase !== 'done'
   const isActive = phase !== 'idle' && phase !== 'done'
@@ -64,36 +67,18 @@ export function TimerDisplay({ phase, timeLeft, currentRound, totalRounds, total
       </div>
 
       {/* Ring + clock */}
-      <div className="relative flex items-center justify-center w-[260px] h-[260px]">
-        <svg
-          width="260"
-          height="260"
-          viewBox="0 0 260 260"
-          className="-rotate-90"
-          aria-hidden="true"
-        >
-          {/* Track */}
-          <circle cx="130" cy="130" r={RING_R} fill="none" stroke="#1e2d3d" strokeWidth="10" />
-          {/* Progress arc */}
-          <circle
-            cx="130"
-            cy="130"
-            r={RING_R}
-            fill="none"
-            stroke={color}
-            strokeWidth="10"
-            strokeLinecap="round"
-            strokeDasharray={CIRC}
-            strokeDashoffset={offset}
+      <CircularProgress value={pct} min={0} max={100} size={260} thickness={10} className="w-[260px] h-[260px]">
+        <CircularProgressIndicator>
+          <CircularProgressTrack style={{ color: '#1e2d3d' }} />
+          <CircularProgressRange
             style={{
-              transition: 'stroke-dashoffset 1s linear, stroke 0.4s ease',
+              color,
               filter: phase !== 'idle' ? `drop-shadow(0 0 8px ${color}88)` : 'none',
+              transition: 'stroke-dashoffset 1s linear, color 0.4s ease',
             }}
           />
-        </svg>
-
-        {/* Time — centered over ring */}
-        <div className="absolute inset-0 flex items-center justify-center">
+        </CircularProgressIndicator>
+        <CircularProgressValueText>
           <span
             className={cn(
               'font-condensed font-black text-white leading-none tracking-tight tabular-nums',
@@ -103,8 +88,8 @@ export function TimerDisplay({ phase, timeLeft, currentRound, totalRounds, total
           >
             {mm}:{ss}
           </span>
-        </div>
-      </div>
+        </CircularProgressValueText>
+      </CircularProgress>
 
       {/* Round info + dots */}
       <div className="flex flex-col items-center gap-2">

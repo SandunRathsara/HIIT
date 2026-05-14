@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --font-sans: 'Barlow', system-ui, sans-serif;
   --font-condensed: 'Barlow Condensed', system-ui, sans-serif;
@@ -35,5 +37,17 @@ html, body, #root {
 @layer utilities {
   .countdown-pulse {
     animation: countdown-pulse 0.65s ease-in-out infinite;
+  }
+}
+
+@theme inline {
+  --animate-spin-around: spin-around 0.8s linear infinite;
+  @keyframes spin-around {
+  0% {
+    transform: rotate(-90deg);
+    }
+  100% {
+    transform: rotate(270deg);
+    }
   }
 }
