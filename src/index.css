@@ -4,6 +4,13 @@
 @theme {
   --font-sans: 'Barlow', system-ui, sans-serif;
   --font-condensed: 'Barlow Condensed', system-ui, sans-serif;
+
+  /* shadcn component tokens — mapped to our teal/slate palette */
+  --color-primary: #14b8a6;
+  --color-primary-foreground: #0d1b2a;
+  --color-input: #334155;
+  --color-background: #1e293b;
+  --color-ring: #14b8a6;
 }
 
 *, *::before, *::after {
