@@ -112,7 +112,7 @@ function CircularProgress(props: CircularProgressProps) {
   } = props;
 
   if ((maxProp || maxProp === 0) && !getIsValidMaxNumber(maxProp)) {
-    if (process.env.NODE_ENV !== "production") {
+    if (import.meta.env.DEV) {
       console.error(getInvalidMaxError(`${maxProp}`, CIRCULAR_PROGRESS_NAME));
     }
   }
@@ -121,14 +121,14 @@ function CircularProgress(props: CircularProgressProps) {
   const min = getIsValidNumber(minProp) ? minProp : 0;
   const max = rawMax <= min ? min + 1 : rawMax;
 
-  if (process.env.NODE_ENV !== "production" && thickness >= size) {
+  if (import.meta.env.DEV && thickness >= size) {
     console.warn(
       `CircularProgress: thickness (${thickness}) should be less than size (${size}) for proper rendering.`,
     );
   }
 
   if (valueProp !== null && !getIsValidValueNumber(valueProp, min, max)) {
-    if (process.env.NODE_ENV !== "production") {
+    if (import.meta.env.DEV) {
       console.error(
         getInvalidValueError(`${valueProp}`, CIRCULAR_PROGRESS_NAME),
       );

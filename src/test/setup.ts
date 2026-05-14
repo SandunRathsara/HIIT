@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import '@testing-library/jest-dom'
 
 // Polyfill ResizeObserver for jsdom (used by Radix UI Slider)
