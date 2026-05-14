@@ -1,6 +1,7 @@
+import { Minus, Plus, Lock } from 'lucide-react'
 import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
-import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import type { HiitSettings } from '@/hooks/useHiitTimer'
 
 function formatTime(s: number): string {
@@ -19,36 +20,42 @@ interface SettingRowProps {
   onDecrement: () => void
   onIncrement: () => void
   onChange: (v: number) => void
-  disabled: boolean
 }
 
-function SettingRow({ label, value, min, max, step, display, onDecrement, onIncrement, onChange, disabled }: SettingRowProps) {
+function SettingRow({ label, value, min, max, step, display, onDecrement, onIncrement, onChange }: SettingRowProps) {
+  const btnBase = cn(
+    'w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150',
+    'bg-slate-800 hover:bg-slate-700 text-teal-400 cursor-pointer active:scale-90',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/50',
+    'disabled:opacity-25 disabled:cursor-not-allowed disabled:active:scale-100'
+  )
+
   return (
-    <div className="mb-4">
+    <div className="mb-5">
       <div className="flex justify-between items-center mb-2">
-        <span className="text-xs font-bold tracking-widest uppercase text-gray-400">{label}</span>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-teal-400 text-lg p-0"
-            onClick={onDecrement}
-            disabled={disabled || value <= min}
+        <span className="text-[11px] font-condensed font-semibold tracking-[3px] uppercase text-slate-500">
+          {label}
+        </span>
+        <div className="flex items-center gap-2.5">
+          <button
             aria-label="−"
+            className={btnBase}
+            onClick={onDecrement}
+            disabled={value <= min}
           >
-            −
-          </Button>
-          <span className="text-white font-bold font-mono text-lg min-w-[48px] text-center">
+            <Minus className="w-3.5 h-3.5" aria-hidden="true" />
+          </button>
+          <span className="font-condensed font-bold text-lg text-white min-w-[52px] text-center tabular-nums">
             {display}
           </span>
-          <Button
-            variant="ghost"
-            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-teal-400 text-lg p-0"
-            onClick={onIncrement}
-            disabled={disabled || value >= max}
+          <button
             aria-label="+"
+            className={btnBase}
+            onClick={onIncrement}
+            disabled={value >= max}
           >
-            +
-          </Button>
+            <Plus className="w-3.5 h-3.5" aria-hidden="true" />
+          </button>
         </div>
       </div>
       <Slider
@@ -56,9 +63,8 @@ function SettingRow({ label, value, min, max, step, display, onDecrement, onIncr
         min={min}
         max={max}
         step={step}
-        disabled={disabled}
         onValueChange={([v]) => onChange(v)}
-        className="[&_.slider-track]:bg-slate-700 [&_.slider-range]:bg-teal-500"
+        className="[&_[role=slider]]:bg-teal-400 [&_[role=slider]]:border-teal-400 [&_[role=slider]]:shadow-[0_0_6px_#14b8a666]"
       />
     </div>
   )
@@ -73,8 +79,9 @@ interface SettingsPanelProps {
 export function SettingsPanel({ settings, isLocked, onUpdate }: SettingsPanelProps) {
   if (isLocked) {
     return (
-      <div className="bg-slate-950 border-t border-slate-800 px-5 py-4 text-center">
-        <p className="text-xs tracking-widest uppercase text-slate-600">
+      <div className="border-t border-slate-800/60 px-5 py-5 flex items-center justify-center gap-2.5 text-slate-600">
+        <Lock className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+        <p className="text-[11px] font-condensed font-semibold tracking-[3px] uppercase">
           Settings locked during workout
         </p>
       </div>
@@ -82,8 +89,11 @@ export function SettingsPanel({ settings, isLocked, onUpdate }: SettingsPanelPro
   }
 
   return (
-    <div className="bg-slate-950 border-t border-slate-800 px-5 pt-4 pb-5">
-      <p className="text-xs font-bold tracking-widest uppercase text-teal-500 mb-4">SETTINGS</p>
+    <div className="border-t border-slate-800/60 px-5 pt-4 pb-6">
+      <p className="text-[11px] font-condensed font-bold tracking-[3px] uppercase text-teal-500 mb-4">
+        SETTINGS
+      </p>
+
       <SettingRow
         label="WORK"
         value={settings.workTime}
@@ -92,7 +102,6 @@ export function SettingsPanel({ settings, isLocked, onUpdate }: SettingsPanelPro
         onDecrement={() => onUpdate('workTime', Math.max(5, settings.workTime - 5))}
         onIncrement={() => onUpdate('workTime', Math.min(300, settings.workTime + 5))}
         onChange={v => onUpdate('workTime', v)}
-        disabled={false}
       />
       <SettingRow
         label="REST"
@@ -102,7 +111,6 @@ export function SettingsPanel({ settings, isLocked, onUpdate }: SettingsPanelPro
         onDecrement={() => onUpdate('restTime', Math.max(5, settings.restTime - 5))}
         onIncrement={() => onUpdate('restTime', Math.min(300, settings.restTime + 5))}
         onChange={v => onUpdate('restTime', v)}
-        disabled={false}
       />
       <SettingRow
         label="ROUNDS"
@@ -112,10 +120,12 @@ export function SettingsPanel({ settings, isLocked, onUpdate }: SettingsPanelPro
         onDecrement={() => onUpdate('rounds', Math.max(1, settings.rounds - 1))}
         onIncrement={() => onUpdate('rounds', Math.min(20, settings.rounds + 1))}
         onChange={v => onUpdate('rounds', v)}
-        disabled={false}
       />
-      <div className="flex justify-between items-center mt-2">
-        <span className="text-xs font-bold tracking-widest uppercase text-gray-400">PREPARE DELAY</span>
+
+      <div className="flex justify-between items-center mt-1">
+        <span className="text-[11px] font-condensed font-semibold tracking-[3px] uppercase text-slate-500">
+          PREPARE DELAY
+        </span>
         <Switch
           checked={settings.prepareDelay}
           onCheckedChange={v => onUpdate('prepareDelay', v)}
