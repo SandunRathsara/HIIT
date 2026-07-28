@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="112" fill="#0d1b2a"/>
+  <!-- timer track -->
+  <circle cx="256" cy="272" r="150" fill="none" stroke="#334155" stroke-width="34"/>
+  <!-- work arc -->
+  <circle cx="256" cy="272" r="150" fill="none" stroke="#14b8a6" stroke-width="34"
+          stroke-linecap="round" stroke-dasharray="707 943" transform="rotate(-90 256 272)"/>
+  <!-- lightning bolt -->
+  <path d="M282 178 L196 292 h52 l-18 96 86 -122 h-52 z" fill="#14b8a6"/>
+  <!-- timer stem -->
+  <rect x="226" y="76" width="60" height="34" rx="17" fill="#14b8a6"/>
+</svg>

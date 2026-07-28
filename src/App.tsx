@@ -30,7 +30,7 @@ export default function App() {
     <div className={cn('min-h-dvh flex justify-center transition-colors duration-700', PHASE_BG[phase])}>
       <div className="w-full max-w-sm flex flex-col min-h-dvh">
 
-        <header className="flex items-center justify-center px-5 pt-6 pb-2">
+        <header className="flex items-center justify-center px-5 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-2">
           <h1 className="font-condensed font-bold text-xs tracking-[5px] uppercase text-teal-400 select-none">
             HIIT TIMER
           </h1>
@@ -58,11 +58,13 @@ export default function App() {
           />
         </section>
 
-        <SettingsPanel
-          settings={settings}
-          isLocked={isLocked}
-          onUpdate={updateSetting}
-        />
+        <div className="pb-[env(safe-area-inset-bottom)]">
+          <SettingsPanel
+            settings={settings}
+            isLocked={isLocked}
+            onUpdate={updateSetting}
+          />
+        </div>
 
       </div>
     </div>
