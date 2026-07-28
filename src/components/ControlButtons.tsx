@@ -26,11 +26,11 @@ export function ControlButtons({ phase, isRunning, onStart, onPause, onReset }: 
   const startLabel = phase === 'idle' ? 'START' : 'RESUME'
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {showStartOrResume && (
         <button
           aria-label={startLabel}
-          className={cn(baseBtn, 'h-16 text-xl', PHASE_CTA_STYLE[phase])}
+          className={cn(baseBtn, 'h-[clamp(48px,7dvh,64px)] text-xl', PHASE_CTA_STYLE[phase])}
           onClick={onStart}
         >
           <Play className="w-5 h-5 fill-current" aria-hidden="true" />
@@ -41,7 +41,7 @@ export function ControlButtons({ phase, isRunning, onStart, onPause, onReset }: 
       {showPause && (
         <button
           aria-label="PAUSE"
-          className={cn(baseBtn, 'h-16 text-xl', PHASE_CTA_STYLE[phase])}
+          className={cn(baseBtn, 'h-[clamp(48px,7dvh,64px)] text-xl', PHASE_CTA_STYLE[phase])}
           onClick={onPause}
         >
           <Pause className="w-5 h-5 fill-current" aria-hidden="true" />
@@ -53,7 +53,7 @@ export function ControlButtons({ phase, isRunning, onStart, onPause, onReset }: 
         aria-label="↺"
         className={cn(
           baseBtn,
-          'h-12 text-sm font-semibold',
+          'h-[clamp(36px,5dvh,48px)] text-sm font-semibold',
           'bg-transparent border border-slate-700/60 hover:border-slate-500 text-slate-500 hover:text-slate-300',
           'disabled:opacity-25 disabled:cursor-not-allowed disabled:active:scale-100'
         )}

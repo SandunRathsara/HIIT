@@ -24,15 +24,15 @@ interface SettingRowProps {
 
 function SettingRow({ label, value, min, max, step, display, onDecrement, onIncrement, onChange }: SettingRowProps) {
   const btnBase = cn(
-    'w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150',
+    'w-8 h-8 rounded-full flex items-center justify-center transition-all duration-150',
     'bg-slate-800 hover:bg-slate-700 text-teal-400 cursor-pointer active:scale-90',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/50',
     'disabled:opacity-25 disabled:cursor-not-allowed disabled:active:scale-100'
   )
 
   return (
-    <div className="mb-5">
-      <div className="flex justify-between items-center mb-2">
+    <div className="mb-[clamp(8px,1.6dvh,20px)]">
+      <div className="flex justify-between items-center mb-1.5">
         <span className="text-[11px] font-condensed font-semibold tracking-[3px] uppercase text-slate-500">
           {label}
         </span>
@@ -79,7 +79,7 @@ interface SettingsPanelProps {
 export function SettingsPanel({ settings, isLocked, onUpdate }: SettingsPanelProps) {
   if (isLocked) {
     return (
-      <div className="border-t border-slate-800/60 px-5 py-5 flex items-center justify-center gap-2.5 text-slate-600">
+      <div className="border-t border-slate-800/60 px-5 py-4 flex items-center justify-center gap-2.5 text-slate-600">
         <Lock className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
         <p className="text-[11px] font-condensed font-semibold tracking-[3px] uppercase">
           Settings locked during workout
@@ -89,8 +89,8 @@ export function SettingsPanel({ settings, isLocked, onUpdate }: SettingsPanelPro
   }
 
   return (
-    <div className="border-t border-slate-800/60 px-5 pt-4 pb-6">
-      <p className="text-[11px] font-condensed font-bold tracking-[3px] uppercase text-teal-500 mb-4">
+    <div className="border-t border-slate-800/60 px-5 pt-[clamp(8px,1.6dvh,16px)] pb-[clamp(10px,2dvh,24px)]">
+      <p className="text-[11px] font-condensed font-bold tracking-[3px] uppercase text-teal-500 mb-[clamp(6px,1.4dvh,16px)]">
         SETTINGS
       </p>
 

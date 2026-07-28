@@ -53,10 +53,10 @@ export function TimerDisplay({ phase, timeLeft, currentRound, totalRounds, total
   const isActive = phase !== 'idle' && phase !== 'done'
 
   return (
-    <div className="flex flex-col items-center gap-3 select-none">
+    <div className="flex flex-col items-center gap-2 select-none w-full h-full min-h-0">
 
       {/* Phase label */}
-      <div className={cn('flex items-center gap-2 font-condensed font-bold text-xs tracking-[4px] uppercase', PHASE_TEXT_COLOR[phase])}>
+      <div className={cn('shrink-0 flex items-center gap-2 font-condensed font-bold text-xs tracking-[4px] uppercase', PHASE_TEXT_COLOR[phase])}>
         {isActive && (
           <span
             className="w-2 h-2 rounded-full animate-pulse"
@@ -66,33 +66,43 @@ export function TimerDisplay({ phase, timeLeft, currentRound, totalRounds, total
         {PHASE_LABELS[phase]}
       </div>
 
-      {/* Ring + clock */}
-      <CircularProgress value={pct} min={0} max={100} size={260} thickness={10} className="w-[260px] h-[260px]">
-        <CircularProgressIndicator>
-          <CircularProgressTrack style={{ color: '#1e2d3d' }} />
-          <CircularProgressRange
-            style={{
-              color,
-              filter: phase !== 'idle' ? `drop-shadow(0 0 8px ${color}88)` : 'none',
-              transition: 'stroke-dashoffset 1s linear, color 0.4s ease',
-            }}
-          />
-        </CircularProgressIndicator>
-        <CircularProgressValueText>
-          <span
-            className={cn(
-              'font-condensed font-black text-white leading-none tracking-tight tabular-nums',
-              isCountdown && 'countdown-pulse'
-            )}
-            style={{ fontSize: 'clamp(60px, 17vw, 80px)' }}
-          >
-            {mm}:{ss}
-          </span>
-        </CircularProgressValueText>
-      </CircularProgress>
+      {/* Ring + clock — fills all leftover vertical space, stays square */}
+      <div className="flex-1 min-h-0 w-full flex items-center justify-center [container-type:size]">
+        <CircularProgress
+          value={pct}
+          min={0}
+          max={100}
+          size={260}
+          thickness={10}
+          className="aspect-square max-w-full [container-type:size]"
+          style={{ width: 'min(100cqw, 100cqh)' }}
+        >
+          <CircularProgressIndicator className="w-full h-full">
+            <CircularProgressTrack style={{ color: '#1e2d3d' }} />
+            <CircularProgressRange
+              style={{
+                color,
+                filter: phase !== 'idle' ? `drop-shadow(0 0 8px ${color}88)` : 'none',
+                transition: 'stroke-dashoffset 1s linear, color 0.4s ease',
+              }}
+            />
+          </CircularProgressIndicator>
+          <CircularProgressValueText>
+            <span
+              className={cn(
+                'font-condensed font-black text-white leading-none tracking-tight tabular-nums',
+                isCountdown && 'countdown-pulse'
+              )}
+              style={{ fontSize: 'clamp(36px, 30cqmin, 80px)' }}
+            >
+              {mm}:{ss}
+            </span>
+          </CircularProgressValueText>
+        </CircularProgress>
+      </div>
 
       {/* Round info + dots */}
-      <div className="flex flex-col items-center gap-2">
+      <div className="shrink-0 flex flex-col items-center gap-1.5">
         <span className="text-xs font-condensed font-semibold tracking-widest uppercase text-slate-500">
           {phase !== 'idle'
             ? `ROUND ${currentRound} / ${totalRounds}`

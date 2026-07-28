@@ -27,38 +27,45 @@ export default function App() {
   const totalTime = getPhaseTotalTime(phase, settings)
 
   return (
-    <div className={cn('min-h-dvh flex justify-center transition-colors duration-700', PHASE_BG[phase])}>
-      <div className="w-full max-w-sm flex flex-col min-h-dvh">
+    <div className={cn('h-dvh overflow-hidden flex justify-center transition-colors duration-700', PHASE_BG[phase])}>
+      {/* Portrait: single column. Short/landscape screens: timer | settings side by side. */}
+      <div className="w-full max-w-sm h-full flex flex-col overflow-hidden [@media(orientation:landscape)_and_(max-height:600px)]:max-w-3xl [@media(orientation:landscape)_and_(max-height:600px)]:flex-row">
 
-        <header className="flex items-center justify-center px-5 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-2">
-          <h1 className="font-condensed font-bold text-xs tracking-[5px] uppercase text-teal-400 select-none">
-            HIIT TIMER
-          </h1>
-        </header>
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
 
-        <main className="flex-1 flex items-center justify-center py-2">
-          <TimerDisplay
-            phase={phase}
-            timeLeft={timeLeft}
-            currentRound={currentRound}
-            totalRounds={settings.rounds}
-            totalTime={totalTime}
-          />
-        </main>
+          <header className="shrink-0 flex items-center justify-center px-5 pt-[calc(0.75rem+env(safe-area-inset-top))] pb-1">
+            <h1 className="font-condensed font-bold text-xs tracking-[5px] uppercase text-teal-400 select-none">
+              HIIT TIMER
+            </h1>
+          </header>
 
-        <ProgressBar phase={phase} timeLeft={timeLeft} totalTime={totalTime} />
+          <main className="flex-1 min-h-0 flex items-center justify-center px-5 py-1">
+            <TimerDisplay
+              phase={phase}
+              timeLeft={timeLeft}
+              currentRound={currentRound}
+              totalRounds={settings.rounds}
+              totalTime={totalTime}
+            />
+          </main>
 
-        <section className="px-5 py-4">
-          <ControlButtons
-            phase={phase}
-            isRunning={isRunning}
-            onStart={start}
-            onPause={pause}
-            onReset={reset}
-          />
-        </section>
+          <div className="shrink-0">
+            <ProgressBar phase={phase} timeLeft={timeLeft} totalTime={totalTime} />
+          </div>
 
-        <div className="pb-[env(safe-area-inset-bottom)]">
+          <section className="shrink-0 px-5 py-3">
+            <ControlButtons
+              phase={phase}
+              isRunning={isRunning}
+              onStart={start}
+              onPause={pause}
+              onReset={reset}
+            />
+          </section>
+
+        </div>
+
+        <div className="shrink-0 overflow-hidden pb-[env(safe-area-inset-bottom)] [@media(orientation:landscape)_and_(max-height:600px)]:w-[19rem] [@media(orientation:landscape)_and_(max-height:600px)]:flex [@media(orientation:landscape)_and_(max-height:600px)]:flex-col [@media(orientation:landscape)_and_(max-height:600px)]:justify-center [@media(orientation:landscape)_and_(max-height:600px)]:pb-0 [@media(orientation:landscape)_and_(max-height:600px)]:[&>div]:border-t-0 [@media(orientation:landscape)_and_(max-height:600px)]:[&>div]:border-l">
           <SettingsPanel
             settings={settings}
             isLocked={isLocked}
