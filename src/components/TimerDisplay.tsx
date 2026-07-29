@@ -6,21 +6,27 @@ import {
   CircularProgressValueText,
 } from '@/components/ui/circular-progress'
 import { cn } from '@/lib/utils'
-import type { Phase } from '@/hooks/useHiitTimer'
+import { formatCountdown } from '@/lib/duration'
+import type { Phase } from '@/hooks/useWorkoutTimer'
+import type { PhaseView } from '@/lib/phaseView'
 
 interface TimerDisplayProps {
   phase: Phase
+  view: PhaseView
   timeLeft: number
+  elapsed: number
+  repsTarget: number | null
   currentRound: number
   totalRounds: number
-  totalTime?: number
+  phaseTotal: number
 }
 
-const RING_COLOR: Record<Phase, string> = {
+export const RING_COLOR: Record<Phase, string> = {
   idle: '#475569',
   prep: '#FBBF24',
   work: '#F97316',
   rest: '#60A5FA',
+  cooldown: '#22D3EE',
   done: '#34D399',
 }
 
@@ -29,45 +35,43 @@ const PHASE_TEXT_COLOR: Record<Phase, string> = {
   prep: 'text-amber-400',
   work: 'text-orange-400',
   rest: 'text-blue-400',
+  cooldown: 'text-cyan-400',
   done: 'text-emerald-400',
 }
 
-const PHASE_LABELS: Record<Phase, string> = {
-  idle: 'READY',
-  prep: 'GET READY',
-  work: 'WORK',
-  rest: 'REST',
-  done: 'DONE!',
-}
-
-export function TimerDisplay({ phase, timeLeft, currentRound, totalRounds, totalTime = 0 }: TimerDisplayProps) {
-  const mm = Math.floor(timeLeft / 60).toString().padStart(2, '0')
-  const ss = (timeLeft % 60).toString().padStart(2, '0')
-
-  const pct = phase === 'done'
-    ? 100
-    : totalTime > 0 ? ((totalTime - timeLeft) / totalTime) * 100 : 0
-
+export function TimerDisplay({
+  phase,
+  view,
+  timeLeft,
+  elapsed,
+  repsTarget,
+  currentRound,
+  totalRounds,
+  phaseTotal,
+}: TimerDisplayProps) {
   const color = RING_COLOR[phase]
-  const isCountdown = timeLeft <= 3 && timeLeft > 0 && phase !== 'idle' && phase !== 'done'
   const isActive = phase !== 'idle' && phase !== 'done'
+  const isCountdown = view.showsClock && timeLeft <= 3 && timeLeft > 0 && isActive
+  const pct = phaseTotal > 0 ? ((phaseTotal - timeLeft) / phaseTotal) * 100 : 100
 
   return (
-    <div className="flex flex-col items-center gap-2 select-none w-full h-full min-h-0">
-
-      {/* Phase label */}
-      <div className={cn('shrink-0 flex items-center gap-2 font-condensed font-bold text-xs tracking-[4px] uppercase', PHASE_TEXT_COLOR[phase])}>
+    <div className="flex h-full min-h-0 w-full flex-col items-center gap-2 select-none">
+      <div
+        className={cn(
+          'flex shrink-0 items-center gap-2 font-condensed text-xs font-bold tracking-[4px] uppercase',
+          PHASE_TEXT_COLOR[phase],
+        )}
+      >
         {isActive && (
           <span
-            className="w-2 h-2 rounded-full animate-pulse"
+            className="h-2 w-2 rounded-full animate-pulse"
             style={{ backgroundColor: color }}
           />
         )}
-        {PHASE_LABELS[phase]}
+        {view.label}
       </div>
 
-      {/* Ring + clock — fills all leftover vertical space, stays square */}
-      <div className="flex-1 min-h-0 w-full flex items-center justify-center [container-type:size]">
+      <div className="flex min-h-0 w-full flex-1 items-center justify-center [container-type:size]">
         <CircularProgress
           value={pct}
           min={0}
@@ -77,36 +81,77 @@ export function TimerDisplay({ phase, timeLeft, currentRound, totalRounds, total
           className="aspect-square max-w-full [container-type:size]"
           style={{ width: 'min(100cqw, 100cqh)' }}
         >
-          <CircularProgressIndicator className="w-full h-full">
+          <CircularProgressIndicator className="h-full w-full">
             <CircularProgressTrack style={{ color: '#1e2d3d' }} />
             <CircularProgressRange
+              className={cn(!view.showsClock && 'ring-breathe')}
               style={{
                 color,
-                filter: phase !== 'idle' ? `drop-shadow(0 0 8px ${color}88)` : 'none',
+                filter: isActive ? `drop-shadow(0 0 8px ${color}88)` : 'none',
                 transition: 'stroke-dashoffset 1s linear, color 0.4s ease',
               }}
             />
           </CircularProgressIndicator>
+
           <CircularProgressValueText>
-            <span
-              className={cn(
-                'font-condensed font-black text-white leading-none tracking-tight tabular-nums',
-                isCountdown && 'countdown-pulse'
+            <span className="flex flex-col items-center justify-center gap-0.5 px-[12cqmin] text-center">
+              {view.kicker && (
+                <span
+                  className="font-condensed text-[10px] font-bold tracking-[4px] uppercase"
+                  style={{ fontSize: 'clamp(9px, 5cqmin, 13px)', color }}
+                >
+                  {view.kicker}
+                </span>
               )}
-              style={{ fontSize: 'clamp(36px, 30cqmin, 80px)' }}
-            >
-              {mm}:{ss}
+
+              <span
+                className="line-clamp-2 font-condensed font-bold tracking-tight text-white uppercase"
+                style={{ fontSize: 'clamp(13px, 10cqmin, 26px)', lineHeight: 1.05 }}
+              >
+                {view.ringText}
+              </span>
+
+              {view.showsClock ? (
+                <span
+                  className={cn(
+                    'font-condensed font-black leading-none tracking-tight text-white tabular-nums',
+                    isCountdown && 'countdown-pulse',
+                  )}
+                  style={{ fontSize: 'clamp(28px, 24cqmin, 62px)' }}
+                >
+                  {formatCountdown(timeLeft)}
+                </span>
+              ) : (
+                <span
+                  className="font-condensed font-black leading-none text-white tabular-nums"
+                  style={{ fontSize: 'clamp(28px, 24cqmin, 62px)' }}
+                >
+                  {repsTarget ?? 0}
+                </span>
+              )}
+
+              {!view.showsClock && (
+                <span
+                  className="font-condensed font-semibold tracking-[3px] text-slate-400 uppercase tabular-nums"
+                  style={{ fontSize: 'clamp(9px, 5cqmin, 13px)' }}
+                >
+                  {formatCountdown(elapsed)} elapsed
+                </span>
+              )}
             </span>
           </CircularProgressValueText>
         </CircularProgress>
       </div>
 
-      {/* Round info + dots */}
-      <div className="shrink-0 flex flex-col items-center gap-1.5">
-        <span className="text-xs font-condensed font-semibold tracking-widest uppercase text-slate-500">
-          {phase !== 'idle'
-            ? `ROUND ${currentRound} / ${totalRounds}`
-            : `${totalRounds} ROUNDS`}
+      <div className="flex shrink-0 flex-col items-center gap-1">
+        {view.subline && (
+          <span className="max-w-[30ch] truncate text-center text-xs text-slate-400">
+            {view.subline}
+          </span>
+        )}
+
+        <span className="font-condensed text-xs font-semibold tracking-widest text-slate-500 uppercase tabular-nums">
+          Round {currentRound} / {totalRounds}
         </span>
 
         {totalRounds > 1 && (
@@ -130,7 +175,6 @@ export function TimerDisplay({ phase, timeLeft, currentRound, totalRounds, total
           </div>
         )}
       </div>
-
     </div>
   )
 }

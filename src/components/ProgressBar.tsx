@@ -1,4 +1,4 @@
-import type { Phase } from '@/hooks/useHiitTimer'
+import type { Phase } from '@/hooks/useWorkoutTimer'
 
 interface ProgressBarProps {
   phase: Phase
@@ -11,6 +11,7 @@ const FILL_COLOR: Record<Phase, string> = {
   prep: 'bg-amber-400',
   work: 'bg-orange-500',
   rest: 'bg-blue-400',
+  cooldown: 'bg-cyan-400',
   done: 'bg-emerald-400',
 }
 
