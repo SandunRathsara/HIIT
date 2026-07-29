@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router'
+import { useCallback } from 'react'
+import { useNavigate, useBlocker, type BlockerFunction } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
 import type { Workout } from '@/db/schema'
 import { useWorkoutTimer } from '@/hooks/useWorkoutTimer'
@@ -9,6 +10,8 @@ import { describePhase } from '@/lib/phaseView'
 import { TimerDisplay } from '@/components/TimerDisplay'
 import { ProgressBar } from '@/components/ProgressBar'
 import { ControlButtons } from '@/components/ControlButtons'
+import { ConfirmSheet } from '@/components/ConfirmSheet'
+import { CompletePanel } from '@/components/CompletePanel'
 import { cn } from '@/lib/utils'
 import type { Phase } from '@/hooks/useWorkoutTimer'
 
@@ -29,6 +32,11 @@ export function WorkoutRunner({ workout }: WorkoutRunnerProps) {
   const navigate = useNavigate()
   const timer = useWorkoutTimer(workout)
   const isActive = timer.phase !== 'idle' && timer.phase !== 'done'
+
+  // Blocks the header back arrow AND Android hardware back — both route through
+  // the data router, so one hook covers both.
+  const shouldBlock = useCallback<BlockerFunction>(() => isActive, [isActive])
+  const blocker = useBlocker(shouldBlock)
 
   useWakeLock(isActive && timer.isRunning)
 
@@ -65,6 +73,16 @@ export function WorkoutRunner({ workout }: WorkoutRunnerProps) {
           <div className="min-h-0 flex-1">
             <PreStartPanel workout={workout} onStart={handleStart} />
           </div>
+        ) : timer.phase === 'done' ? (
+          <div className="min-h-0 flex-1">
+            <CompletePanel
+              workoutName={workout.name}
+              rounds={workout.rounds.length}
+              totalSeconds={timer.totalElapsed}
+              onAgain={timer.reset}
+              onBackToList={() => navigate('/')}
+            />
+          </div>
         ) : (
           <>
             <main className="flex min-h-0 flex-1 items-center justify-center px-5 py-1">
@@ -98,6 +116,20 @@ export function WorkoutRunner({ workout }: WorkoutRunnerProps) {
           </>
         )}
       </div>
+
+      <ConfirmSheet
+        open={blocker.state === 'blocked'}
+        title="Quit workout?"
+        body={`Round ${timer.roundIndex + 1} of ${workout.rounds.length}`}
+        confirmLabel="Quit"
+        cancelLabel="Keep going"
+        tone="danger"
+        onConfirm={() => {
+          timer.reset()
+          blocker.proceed?.()
+        }}
+        onCancel={() => blocker.reset?.()}
+      />
     </div>
   )
 }
