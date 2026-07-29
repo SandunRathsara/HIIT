@@ -22,12 +22,15 @@
 html, body, #root {
   margin: 0;
   padding: 0;
-  height: 100dvh;
-  overflow: hidden;
+  min-height: 100dvh;
   background-color: #0d1b2a;
   font-family: 'Barlow', system-ui, sans-serif;
-  overscroll-behavior: none;
+  overscroll-behavior-y: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+button, a, [role='button'] {
+  touch-action: manipulation; /* kills the 300ms mobile tap delay */
 }
 
 @keyframes countdown-pulse {
@@ -35,9 +38,39 @@ html, body, #root {
   50% { transform: scale(1.06); }
 }
 
+@keyframes ring-breathe {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
 @layer utilities {
   .countdown-pulse {
     animation: countdown-pulse 0.65s ease-in-out infinite;
+  }
+
+  /* Running workout screen: exactly one viewport, never scrolls. */
+  .screen-fixed {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* List and form screens: scroll freely. */
+  .screen-scroll {
+    min-height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+
+  .ring-breathe {
+    animation: ring-breathe 2s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
