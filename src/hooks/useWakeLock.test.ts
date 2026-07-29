@@ -59,6 +59,24 @@ describe('useWakeLock', () => {
     await waitFor(() => expect(request).toHaveBeenCalledTimes(2))
   })
 
+  it('releases a sentinel that resolves after unmount instead of leaking it', async () => {
+    let resolveRequest: ((sentinel: { release: typeof release }) => void) | undefined
+    request.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveRequest = resolve
+        }),
+    )
+
+    const { unmount } = renderHook(() => useWakeLock(true))
+    await waitFor(() => expect(request).toHaveBeenCalled())
+
+    unmount()
+    resolveRequest?.({ release })
+
+    await waitFor(() => expect(release).toHaveBeenCalled())
+  })
+
   it('does nothing where the API is unavailable', () => {
     Object.defineProperty(navigator, 'wakeLock', { value: undefined, configurable: true })
 

@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useNavigate, useBlocker, type BlockerFunction } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
 import type { Workout } from '@/db/schema'
@@ -37,6 +37,13 @@ export function WorkoutRunner({ workout }: WorkoutRunnerProps) {
   // the data router, so one hook covers both.
   const shouldBlock = useCallback<BlockerFunction>(() => isActive, [isActive])
   const blocker = useBlocker(shouldBlock)
+
+  // react-router only re-registers `shouldBlock` when `isActive` flips — it
+  // never un-blocks an already-blocked blocker on its own, so the quit sheet
+  // would otherwise stay mounted over the completion screen.
+  useEffect(() => {
+    if (blocker.state === 'blocked' && !isActive) blocker.reset()
+  }, [blocker, isActive])
 
   useWakeLock(isActive && timer.isRunning)
 

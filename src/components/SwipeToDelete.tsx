@@ -62,7 +62,7 @@ export function SwipeToDelete({ onDelete, deleteLabel, children }: SwipeToDelete
           setOffset(0)
           onDelete()
         }}
-        className="absolute inset-y-0 right-0 flex w-[88px] cursor-pointer items-center justify-center rounded-r-2xl bg-red-600 text-white transition-colors duration-200 hover:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/80"
+        className="absolute inset-y-0 right-0 flex w-[88px] cursor-pointer items-center justify-center rounded-r-2xl bg-red-600 text-white transition-colors duration-200 hover:bg-red-500 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-400"
       >
         <Trash2 className="h-5 w-5" aria-hidden="true" />
       </button>

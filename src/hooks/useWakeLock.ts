@@ -16,7 +16,12 @@ export function useWakeLock(active: boolean): void {
       if (!('wakeLock' in navigator) || !navigator.wakeLock) return
       if (document.visibilityState === 'hidden') return
       try {
-        sentinelRef.current = await navigator.wakeLock.request('screen')
+        const s = await navigator.wakeLock.request('screen')
+        if (cancelled) {
+          void s.release()
+          return
+        }
+        sentinelRef.current = s
       } catch {
         // Denied (low battery, no user gesture) — not worth surfacing.
       }
