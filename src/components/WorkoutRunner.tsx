@@ -19,7 +19,7 @@ interface WorkoutRunnerProps {
   workout: Workout
 }
 
-export const PHASE_BG: Record<Phase, string> = {
+const PHASE_BG: Record<Phase, string> = {
   idle: 'bg-[#0d1b2a]',
   prep: 'bg-[#19130a]',
   work: 'bg-[#1a0c00]',

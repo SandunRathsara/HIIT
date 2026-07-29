@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { Round, Workout } from '@/db/schema'
 import { buildCue, speak, type CueEvent } from '@/lib/cues'
 
@@ -110,12 +110,17 @@ export function useWorkoutTimer(workout: Workout) {
   const [state, setState] = useState<TimerState>(IDLE)
 
   // stateRef gives the interval callback synchronous access to current state
-  // without stale closures. Updated on every render.
+  // without stale closures. Synced right after every commit — well before the
+  // 1s-granularity interval tick could ever observe a stale value.
   const stateRef = useRef(state)
-  stateRef.current = state
+  useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
 
   const workoutRef = useRef(workout)
-  workoutRef.current = workout
+  useLayoutEffect(() => {
+    workoutRef.current = workout
+  }, [workout])
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 

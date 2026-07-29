@@ -21,7 +21,7 @@ interface TimerDisplayProps {
   phaseTotal: number
 }
 
-export const RING_COLOR: Record<Phase, string> = {
+const RING_COLOR: Record<Phase, string> = {
   idle: '#475569',
   prep: '#FBBF24',
   work: '#F97316',

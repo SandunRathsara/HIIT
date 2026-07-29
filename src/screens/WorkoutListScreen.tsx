@@ -18,7 +18,7 @@ export function WorkoutListScreen() {
   const workouts = useLiveQuery(() => listWorkouts(), [])
   // Stamped once per render pass; relative labels are coarse enough that this
   // never looks stale within a session.
-  const now = Date.now()
+  const now = Date.now() // eslint-disable-line react-hooks/purity -- deliberate per-render stamp, see above
   const [pendingDelete, setPendingDelete] = useState<Workout | null>(null)
 
   return (
