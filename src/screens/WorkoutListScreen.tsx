@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Plus } from 'lucide-react'
-import { listWorkouts } from '@/db/workoutRepo'
+import { deleteWorkout, listWorkouts } from '@/db/workoutRepo'
 import { WorkoutCard } from '@/components/WorkoutCard'
 import { EmptyState } from '@/components/EmptyState'
+import { SwipeToDelete } from '@/components/SwipeToDelete'
+import { ConfirmSheet } from '@/components/ConfirmSheet'
+import type { Workout } from '@/db/schema'
 
 function CardSkeleton() {
   return <div className="h-[86px] animate-pulse rounded-2xl bg-slate-900/50" />
@@ -15,6 +19,7 @@ export function WorkoutListScreen() {
   // Stamped once per render pass; relative labels are coarse enough that this
   // never looks stale within a session.
   const now = Date.now()
+  const [pendingDelete, setPendingDelete] = useState<Workout | null>(null)
 
   return (
     <div className="screen-scroll">
@@ -36,11 +41,16 @@ export function WorkoutListScreen() {
           <ul className="flex flex-col gap-3">
             {workouts.map(workout => (
               <li key={workout.id}>
-                <WorkoutCard
-                  workout={workout}
-                  now={now}
-                  onOpen={() => navigate(`/workout/${workout.id}`)}
-                />
+                <SwipeToDelete
+                  deleteLabel={`Delete ${workout.name}`}
+                  onDelete={() => setPendingDelete(workout)}
+                >
+                  <WorkoutCard
+                    workout={workout}
+                    now={now}
+                    onOpen={() => navigate(`/workout/${workout.id}`)}
+                  />
+                </SwipeToDelete>
               </li>
             ))}
           </ul>
@@ -55,6 +65,19 @@ export function WorkoutListScreen() {
       >
         <Plus className="h-7 w-7" aria-hidden="true" />
       </button>
+
+      <ConfirmSheet
+        open={pendingDelete !== null}
+        title="Delete workout?"
+        body={pendingDelete?.name}
+        confirmLabel="Delete"
+        tone="danger"
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={async () => {
+          if (pendingDelete) await deleteWorkout(pendingDelete.id)
+          setPendingDelete(null)
+        }}
+      />
     </div>
   )
 }
