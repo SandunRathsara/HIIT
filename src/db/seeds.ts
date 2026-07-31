@@ -39,7 +39,7 @@ function timedRound(exercise: string, index: number): Round {
   }
 }
 
-export const WORKOUT_SEEDS: WorkoutSeed[] = [
+export const WORKOUT_SEEDS: readonly WorkoutSeed[] = [
   {
     id: 'ten-minute-hiit-v1',
     workout: {

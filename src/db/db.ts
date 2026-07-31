@@ -32,15 +32,24 @@ db.version(2).stores({
 // Dexie holds every queued query until this promise settles, so the workout
 // list cannot render a pre-seed state and then pop a card in.
 //
-// `vipDb` is Dexie's VIP proxy for the still-opening database. Using the
-// module-level `db` here would hit the not-yet-open guard, which is why
-// applySeeds takes the database as a parameter.
+// `vipDb` is Dexie's VIP proxy for the still-opening database. applySeeds
+// takes the database as a parameter for testability (tests can call it
+// against any database instance) and to keep seed.ts free of runtime imports.
 //
 // The catch is load-bearing: a rejected `ready` handler fails db.open(),
 // leaving the app with a database it can never open and a list that never
 // loads. A broken seed should cost the seeded workout, not the app.
-db.on('ready', vipDb =>
-  applySeeds(vipDb as HiitDb, WORKOUT_SEEDS, Date.now()).catch((error: unknown) => {
-    console.error('Workout seeding failed', error)
-  }),
+//
+// Sticky (third arg `true`): Dexie itself calls db.close() from its default
+// versionchange handler and from idbdb.onclose, and a non-sticky subscriber
+// unsubscribes after firing once — leaving seeding dead for the rest of the
+// page session after such a close. applySeeds is idempotent, so re-running it
+// on reopen is free.
+db.on(
+  'ready',
+  vipDb =>
+    applySeeds(vipDb as HiitDb, WORKOUT_SEEDS, Date.now()).catch((error: unknown) => {
+      console.error('Workout seeding failed', error)
+    }),
+  true,
 )

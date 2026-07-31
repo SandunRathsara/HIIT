@@ -21,7 +21,7 @@ import type { WorkoutSeed } from './seeds'
  */
 export function applySeeds(
   db: HiitDb,
-  seeds: WorkoutSeed[],
+  seeds: readonly WorkoutSeed[],
   now: number,
 ): Promise<string[]> {
   return db.transaction('rw', db.workouts, db.appliedSeeds, async () => {
