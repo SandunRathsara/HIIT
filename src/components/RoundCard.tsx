@@ -67,61 +67,92 @@ export function RoundCard({ draft, index, canRemove, onChange, onRemove }: Round
           onChange={exercise => set({ exercise })}
         />
 
-        <SegmentedToggle label={`Round ${index + 1} type`} options={MODE_OPTIONS} value={draft.mode} onChange={setMode} />
+        <div className="flex flex-col gap-4">
+          <section
+            aria-labelledby={`round-${draft.key}-work-heading`}
+            className="border-t border-slate-800/70 pt-4"
+          >
+            <h3
+              id={`round-${draft.key}-work-heading`}
+              className="mb-3 font-condensed text-[11px] font-bold tracking-[3px] text-teal-500 uppercase"
+            >
+              Work
+            </h3>
 
-        <div className="flex flex-col gap-2.5">
-          <PresetChips
-            label={isReps ? 'Reps' : 'Work'}
-            values={isReps ? PRESETS.reps : PRESETS.workTime}
-            value={draft.value}
-            format={v => (isReps ? String(v) : `${v}s`)}
-            onSelect={value => set({ value })}
-          />
-          <StepperRow
-            label={isReps ? 'Reps' : 'Work'}
-            value={draft.value}
-            min={valueLimits.min}
-            max={valueLimits.max}
-            step={valueLimits.step}
-            display={isReps ? `${draft.value}×` : `${draft.value}s`}
-            onChange={value => set({ value })}
-          />
-        </div>
-
-        {isReps && (
-          <div className="flex flex-col gap-1">
-            <StepperRow
-              label="Pace"
-              value={draft.secondsPerRep}
-              min={LIMITS.secondsPerRep.min}
-              max={LIMITS.secondsPerRep.max}
-              step={LIMITS.secondsPerRep.step}
-              display={`${draft.secondsPerRep}s/rep`}
-              onChange={secondsPerRep => set({ secondsPerRep })}
+            <SegmentedToggle
+              label={`Round ${index + 1} work mode`}
+              options={MODE_OPTIONS}
+              value={draft.mode}
+              onChange={setMode}
             />
-            <p className="text-right text-[11px] text-slate-600 tabular-nums">
-              ≈ {formatClock(draft.value * draft.secondsPerRep)} for this round
-            </p>
-          </div>
-        )}
 
-        <div className="flex flex-col gap-2.5">
-          <PresetChips
-            label="Rest"
-            values={PRESETS.restTime}
-            value={draft.restTime}
-            format={v => `${v}s`}
-            onSelect={restTime => set({ restTime })}
-          />
-          <StepperRow
-            label="Rest"
-            value={draft.restTime}
-            min={LIMITS.restTime.min}
-            max={LIMITS.restTime.max}
-            step={LIMITS.restTime.step}
-            display={`${draft.restTime}s`}
-            onChange={restTime => set({ restTime })}
-          />
+            <div className="mt-3 flex flex-col gap-2.5">
+              <PresetChips
+                label={isReps ? 'Reps' : 'Work'}
+                values={isReps ? PRESETS.reps : PRESETS.workTime}
+                value={draft.value}
+                format={v => (isReps ? String(v) : `${v}s`)}
+                onSelect={value => set({ value })}
+              />
+              <StepperRow
+                label={isReps ? 'Reps' : 'Work'}
+                value={draft.value}
+                min={valueLimits.min}
+                max={valueLimits.max}
+                step={valueLimits.step}
+                display={isReps ? `${draft.value}×` : `${draft.value}s`}
+                onChange={value => set({ value })}
+              />
+            </div>
+
+            {isReps && (
+              <div className="mt-4 flex flex-col gap-1">
+                <StepperRow
+                  label="Pace"
+                  value={draft.secondsPerRep}
+                  min={LIMITS.secondsPerRep.min}
+                  max={LIMITS.secondsPerRep.max}
+                  step={LIMITS.secondsPerRep.step}
+                  display={`${draft.secondsPerRep}s/rep`}
+                  onChange={secondsPerRep => set({ secondsPerRep })}
+                />
+                <p className="text-right text-[11px] text-slate-600 tabular-nums">
+                  ≈ {formatClock(draft.value * draft.secondsPerRep)} for this round
+                </p>
+              </div>
+            )}
+          </section>
+
+          <section
+            aria-labelledby={`round-${draft.key}-rest-heading`}
+            className="border-t border-slate-800/70 pt-4"
+          >
+            <h3
+              id={`round-${draft.key}-rest-heading`}
+              className="mb-3 font-condensed text-[11px] font-bold tracking-[3px] text-teal-500 uppercase"
+            >
+              Rest
+            </h3>
+
+            <div className="flex flex-col gap-2.5">
+              <PresetChips
+                label="Rest"
+                values={PRESETS.restTime}
+                value={draft.restTime}
+                format={v => `${v}s`}
+                onSelect={restTime => set({ restTime })}
+              />
+              <StepperRow
+                label="Rest"
+                value={draft.restTime}
+                min={LIMITS.restTime.min}
+                max={LIMITS.restTime.max}
+                step={LIMITS.restTime.step}
+                display={`${draft.restTime}s`}
+                onChange={restTime => set({ restTime })}
+              />
+            </div>
+          </section>
         </div>
       </div>
     </li>
