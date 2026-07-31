@@ -1,10 +1,10 @@
-import { X } from 'lucide-react'
-import { LIMITS, PRESETS, type RoundMode } from '@/db/schema'
-import { StepperRow } from '@/components/form/StepperRow'
-import { PresetChips } from '@/components/form/PresetChips'
-import { SegmentedToggle } from '@/components/form/SegmentedToggle'
-import { TextField } from '@/components/form/TextField'
-import { formatClock } from '@/lib/duration'
+import { X } from "lucide-react"
+import { LIMITS, PRESETS, type RoundMode } from "@/db/schema"
+import { StepperRow } from "@/components/form/StepperRow"
+import { PresetChips } from "@/components/form/PresetChips"
+import { SegmentedToggle } from "@/components/form/SegmentedToggle"
+import { TextField } from "@/components/form/TextField"
+import { formatClock } from "@/lib/duration"
 
 export interface RoundDraft {
   key: number
@@ -16,8 +16,8 @@ export interface RoundDraft {
 }
 
 const MODE_OPTIONS = [
-  { value: 'time' as const, label: 'Time' },
-  { value: 'reps' as const, label: 'Reps' },
+  { value: "time" as const, label: "Time" },
+  { value: "reps" as const, label: "Reps" },
 ]
 
 interface RoundCardProps {
@@ -28,15 +28,24 @@ interface RoundCardProps {
   onRemove: () => void
 }
 
-export function RoundCard({ draft, index, canRemove, onChange, onRemove }: RoundCardProps) {
+export function RoundCard({
+  draft,
+  index,
+  canRemove,
+  onChange,
+  onRemove,
+}: RoundCardProps) {
   const set = (patch: Partial<RoundDraft>) => onChange({ ...draft, ...patch })
-  const isReps = draft.mode === 'reps'
+  const isReps = draft.mode === "reps"
   const valueLimits = isReps ? LIMITS.reps : LIMITS.workTime
 
   /** Switching mode has to move `value` into the other unit's range. */
   function setMode(mode: RoundMode) {
     if (mode === draft.mode) return
-    set({ mode, value: mode === 'reps' ? PRESETS.reps[1] : PRESETS.workTime[1] })
+    set({
+      mode,
+      value: mode === "reps" ? PRESETS.reps[1] : PRESETS.workTime[1],
+    })
   }
 
   return (
@@ -51,7 +60,7 @@ export function RoundCard({ draft, index, canRemove, onChange, onRemove }: Round
           aria-label={`Remove round ${index + 1}`}
           disabled={!canRemove}
           onClick={onRemove}
-          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full text-slate-600 transition-colors duration-200 hover:bg-slate-800 hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60 disabled:cursor-not-allowed disabled:opacity-25"
+          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full text-slate-600 transition-colors duration-200 hover:bg-slate-800 hover:text-slate-300 focus-visible:ring-2 focus-visible:ring-teal-400/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-25"
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </button>
@@ -64,7 +73,7 @@ export function RoundCard({ draft, index, canRemove, onChange, onRemove }: Round
           value={draft.exercise}
           maxLength={LIMITS.exerciseNameChars}
           placeholder={`Round ${index + 1}`}
-          onChange={exercise => set({ exercise })}
+          onChange={(exercise) => set({ exercise })}
         />
 
         <div className="flex flex-col gap-4">
@@ -88,20 +97,20 @@ export function RoundCard({ draft, index, canRemove, onChange, onRemove }: Round
 
             <div className="mt-3 flex flex-col gap-2.5">
               <PresetChips
-                label={isReps ? 'Reps' : 'Work'}
+                label={isReps ? "Reps" : "Work"}
                 values={isReps ? PRESETS.reps : PRESETS.workTime}
                 value={draft.value}
-                format={v => (isReps ? String(v) : `${v}s`)}
-                onSelect={value => set({ value })}
+                format={(v) => (isReps ? String(v) : `${v}s`)}
+                onSelect={(value) => set({ value })}
               />
               <StepperRow
-                label={isReps ? 'Reps' : 'Work'}
+                label={isReps ? "Reps" : "Work"}
                 value={draft.value}
                 min={valueLimits.min}
                 max={valueLimits.max}
                 step={valueLimits.step}
                 display={isReps ? `${draft.value}×` : `${draft.value}s`}
-                onChange={value => set({ value })}
+                onChange={(value) => set({ value })}
               />
             </div>
 
@@ -114,10 +123,11 @@ export function RoundCard({ draft, index, canRemove, onChange, onRemove }: Round
                   max={LIMITS.secondsPerRep.max}
                   step={LIMITS.secondsPerRep.step}
                   display={`${draft.secondsPerRep}s/rep`}
-                  onChange={secondsPerRep => set({ secondsPerRep })}
+                  onChange={(secondsPerRep) => set({ secondsPerRep })}
                 />
                 <p className="text-right text-[11px] text-slate-600 tabular-nums">
-                  ≈ {formatClock(draft.value * draft.secondsPerRep)} for this round
+                  ≈ {formatClock(draft.value * draft.secondsPerRep)} for this
+                  round
                 </p>
               </div>
             )}
@@ -139,8 +149,8 @@ export function RoundCard({ draft, index, canRemove, onChange, onRemove }: Round
                 label="Rest"
                 values={PRESETS.restTime}
                 value={draft.restTime}
-                format={v => `${v}s`}
-                onSelect={restTime => set({ restTime })}
+                format={(v) => `${v}s`}
+                onSelect={(restTime) => set({ restTime })}
               />
               <StepperRow
                 label="Rest"
@@ -149,7 +159,7 @@ export function RoundCard({ draft, index, canRemove, onChange, onRemove }: Round
                 max={LIMITS.restTime.max}
                 step={LIMITS.restTime.step}
                 display={`${draft.restTime}s`}
-                onChange={restTime => set({ restTime })}
+                onChange={(restTime) => set({ restTime })}
               />
             </div>
           </section>

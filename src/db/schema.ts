@@ -1,4 +1,4 @@
-export type RoundMode = 'time' | 'reps'
+export type RoundMode = "time" | "reps"
 
 export type PrepareSeconds = 5 | 10 | 15
 
@@ -53,9 +53,9 @@ export const PRESETS = {
 
 export const DEFAULT_PREPARE_SECONDS: PrepareSeconds = 10
 
-export const DEFAULT_ROUND: Omit<Round, 'order'> = {
-  exercise: '',
-  mode: 'time',
+export const DEFAULT_ROUND: Omit<Round, "order"> = {
+  exercise: "",
+  mode: "time",
   value: 45,
   secondsPerRep: 3,
   restTime: 20,
