@@ -55,6 +55,11 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    // Listen on all interfaces so the app is reachable from phones on the same LAN
+    host: true,
+    port: 5001,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
