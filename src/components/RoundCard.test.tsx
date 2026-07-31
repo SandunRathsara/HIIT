@@ -11,7 +11,6 @@ function setup(overrides: Partial<RoundDraft> = {}) {
     ...DEFAULT_ROUND,
     ...overrides,
   }
-  let rerender: ReturnType<typeof render>['rerender']
   const onChange = vi.fn((next: RoundDraft) => {
     draft = next
     rerender(
@@ -25,7 +24,7 @@ function setup(overrides: Partial<RoundDraft> = {}) {
     )
   })
 
-  const view = render(
+  const { rerender } = render(
     <RoundCard
       draft={draft}
       index={0}
@@ -34,7 +33,6 @@ function setup(overrides: Partial<RoundDraft> = {}) {
       onRemove={onRemove}
     />,
   )
-  rerender = view.rerender
 
   return { draft, onChange, onRemove }
 }
