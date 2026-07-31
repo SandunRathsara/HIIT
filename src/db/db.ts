@@ -1,5 +1,7 @@
 import Dexie, { type EntityTable, type Table } from 'dexie'
 import type { AppliedSeed, Workout } from './schema'
+import { applySeeds } from './seed'
+import { WORKOUT_SEEDS } from './seeds'
 
 export type HiitDb = Dexie & {
   workouts: EntityTable<Workout, 'id'>
@@ -22,3 +24,23 @@ db.version(1).stores({
 db.version(2).stores({
   appliedSeeds: 'id',
 })
+
+// `ready` rather than `populate`: populate only fires when the database is
+// first created, so installs that already exist would never receive a new
+// built-in workout.
+//
+// Dexie holds every queued query until this promise settles, so the workout
+// list cannot render a pre-seed state and then pop a card in.
+//
+// `vipDb` is Dexie's VIP proxy for the still-opening database. Using the
+// module-level `db` here would hit the not-yet-open guard, which is why
+// applySeeds takes the database as a parameter.
+//
+// The catch is load-bearing: a rejected `ready` handler fails db.open(),
+// leaving the app with a database it can never open and a list that never
+// loads. A broken seed should cost the seeded workout, not the app.
+db.on('ready', vipDb =>
+  applySeeds(vipDb as HiitDb, WORKOUT_SEEDS, Date.now()).catch((error: unknown) => {
+    console.error('Workout seeding failed', error)
+  }),
+)
