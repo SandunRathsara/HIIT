@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5001",
+    "dev": "portless run --name hiit --app-port 5001 pnpm run dev:vite",
+    "dev:vite": "vite --port 5001",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
@@ -48,6 +49,7 @@
     "fake-indexeddb": "^6.2.5",
     "globals": "^16.5.0",
     "jsdom": "^29.1.1",
+    "portless": "^0.15.5",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "~5.9.3",
