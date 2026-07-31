@@ -27,6 +27,13 @@ export interface Workout {
   lastUsedAt: number | null
 }
 
+/** Records that a built-in workout has already been delivered to this database. */
+export interface AppliedSeed {
+  /** Matches `WorkoutSeed.id`. */
+  id: string
+  appliedAt: number
+}
+
 export const LIMITS = {
   workTime: { min: 5, max: 300, step: 5 },
   reps: { min: 1, max: 100, step: 1 },
