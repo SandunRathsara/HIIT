@@ -10,7 +10,11 @@ interface PresetChipsProps {
 
 export function PresetChips({ label, values, value, format, onSelect }: PresetChipsProps) {
   return (
-    <div className="flex flex-wrap items-center gap-2" role="group" aria-label={`${label} presets`}>
+    <div
+      className="flex w-full flex-nowrap items-center gap-2"
+      role="group"
+      aria-label={`${label} presets`}
+    >
       {values.map(preset => {
         const active = preset === value
         return (
@@ -20,7 +24,7 @@ export function PresetChips({ label, values, value, format, onSelect }: PresetCh
             aria-pressed={active}
             onClick={() => onSelect(preset)}
             className={cn(
-              'min-h-[44px] min-w-[56px] cursor-pointer rounded-xl px-3',
+              'min-h-[44px] min-w-0 flex-1 cursor-pointer rounded-xl px-3',
               'font-condensed text-base font-semibold tabular-nums',
               'transition-colors duration-200',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60',
