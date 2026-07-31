@@ -45,8 +45,8 @@ export const LIMITS = {
 } as const
 
 export const PRESETS = {
-  workTime: [30, 40, 60],
-  restTime: [15, 20, 60],
+  workTime: [30, 45, 60],
+  restTime: [10, 20, 30],
   reps: [10, 15, 20],
   prepareSeconds: [5, 10, 15],
 } as const
@@ -56,7 +56,7 @@ export const DEFAULT_PREPARE_SECONDS: PrepareSeconds = 10
 export const DEFAULT_ROUND: Omit<Round, 'order'> = {
   exercise: '',
   mode: 'time',
-  value: 40,
+  value: 45,
   secondsPerRep: 3,
   restTime: 20,
 }
