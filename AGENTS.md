@@ -1,43 +1,26 @@
-## Shell Command Rules
+# HIIT Timer - Agent Seed
 
-- NEVER use `npx` directly through the `rtk` hook if it causes script errors.
-- ALWAYS prefix `npx` commands with `rtk proxy` to ensure correct command routing.
-  - Correct: `rtk proxy npx <package>`
-  - Incorrect: `npx <package>` (or allowing the auto-hook to handle it)
-- NEVER use `npm` or `yarn` for this project. always use `pnpm`.
+## Project
 
-## `docs/CURRENT_STATE.md` — codebase source of truth
+Personal-use, mobile-responsive HIIT timer PWA with configurable interval workouts, speech cues, and IndexedDB (Dexie) persistence incl. seeded workouts and a round editor.
 
-### Scope
+Primary stack: React 19 + TypeScript + Vite 7 (PWA) + Tailwind CSS v4 + shadcn/ui + Dexie + Vitest; pnpm. Details: `docs/ARCHITECTURE.md`.
 
-This is a standalone convention. No companion docs required. If a BRS, CHANGELOG, or feature tree exists, you may consult them, but `CURRENT_STATE.md` remains the canonical answer to _"what is this codebase today?"_.
+## Knowledge Routing
 
-### What it is
+| Work | Read | How |
+|---|---|---|
+| User behavior, requirements, workflows, terminology, scope, or domain rules | `docs/DOMAIN.md` | Read before behavior or requirements work. |
+| Components, dependency direction, integrations, state ownership, significant dependencies, runtime/build shape, or local setup | `docs/ARCHITECTURE.md` | Read before structural or environment work. |
+| Locating, explaining, changing, or debugging source | `docs/CODEBASE_MAP.md` | Read the entire file before source work, then follow its `path#symbol` anchors. |
+| A consequential domain or technical decision | `docs/adr/INDEX.md` | Read the index first, then only matching ADRs. |
+| Planning a new capability | `docs/deferred/INDEX.md` | Read the index first, then only matching deferred details. |
 
-Single markdown file answering: **what does this codebase do today, and where is everything?** The only doc you must read to become productive in a new session.
+## User-Facing Output
 
-It is **not**:
+Write all user-facing output for a reader with ADHD. Keep it concise, concrete, easy to scan, and in ASD-STE100 Simplified Technical English.
 
-- a plan — no in-flight or upcoming work
-- a history — no completed-task log
-- a spec — no business requirements
-
-### When to read it
-
-Always, on first interaction with the repo in a session, **before** any other code exploration. After that, navigate from it to specific files. If a user question can be answered from it, answer from it — do not re-crawl the tree.
-
-### Reading the caveman style
-
-File is written in compressed style. To parse:
-
-- Bullet fragments without articles (`the`, `a`).
-- Symbols: `→` leads-to · `⊕` and-also · `~` approximately · `Δ` change.
-- `file:line` references point directly to source (e.g. `auth/login.ts:42`).
-- Empty section with `(none)` means the heading is intentionally empty, not missing.
-
-### Creating or updating it
-
-Do **not** author or edit `CURRENT_STATE.md` inline during normal work (planning, implementation, testing, etc.). Generation and updates happen only when explicitly invoked via the `/current-state` slash command.
-
-If you spot a stale or missing entry while doing other work, surface it to the user — do not silently fix it.
-
+- Lead with the answer; omit preamble and restatement.
+- Use the shortest clear structure: line, bullets, table, tree, or flow.
+- Preserve exact identifiers, paths, commands, errors, and code.
+- Report progress only for discoveries, decisions, or blockers; finish with changes and verification.

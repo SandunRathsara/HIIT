@@ -1,0 +1,113 @@
+{
+  "version": 2,
+  "bearingsVersion": "0.3.4",
+  "harnesses": [
+    "claude",
+    "opencode"
+  ],
+  "exposure": "symlink",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "template": "AGENTS.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:4b3f56ec64c5ec1fe9f8ee43f368493e525093fd70b1747430f97b659a65920b",
+      "owner": "agent"
+    },
+    {
+      "path": "CLAUDE.md",
+      "template": "CLAUDE.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49",
+      "owner": "bearings"
+    },
+    {
+      "path": "docs/DOMAIN.md",
+      "template": "docs/DOMAIN.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:bfce22782bfeb3e7b63834b4b812f3baa69ce7290feece779e33922095c7e1dd",
+      "owner": "agent"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "template": "docs/ARCHITECTURE.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:5aeba1a4b3212c75338d74e5beb70aa1b7aca942ca4f931f6109d6e1f9945f21",
+      "owner": "agent"
+    },
+    {
+      "path": "docs/CODEBASE_MAP.md",
+      "template": "docs/CODEBASE_MAP.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:1a42e933b42490cf7b09e5ca9c12de350d0dbb1d37cdfbabae408dc7d26069c4",
+      "owner": "agent"
+    },
+    {
+      "path": "docs/adr/INDEX.md",
+      "template": "docs/adr/INDEX.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:86bff6cf0c5ea5e401c48bcc894c705435c82a35c18dbf117bcc39884fad914b",
+      "owner": "agent"
+    },
+    {
+      "path": "docs/adr/0000-template.md",
+      "template": "docs/adr/0000-template.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:ed71cd171e32bddbca0e1ba6365515deefec4916ab215d00a89f6ec69a04dee8",
+      "owner": "bearings"
+    },
+    {
+      "path": "docs/deferred/INDEX.md",
+      "template": "docs/deferred/INDEX.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:bdd7e296b2e5acefe322133ecb48845a617b5e1349039a495bfed13777a070f8",
+      "owner": "agent"
+    },
+    {
+      "path": ".agents/commands/refresh-repo-map.md",
+      "template": "agents/commands/refresh-repo-map.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:935297b0f4ab760c1eac9e6330c83d0619955fa024b366bc45c712c8da1ad651",
+      "owner": "bearings"
+    },
+    {
+      "path": ".agents/commands/setup-repo.md",
+      "template": "agents/commands/setup-repo.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:0b0556bc560c25d4abb27f52e7988240b5d0a3a12b395eec4545f89ddbed5e5f",
+      "owner": "bearings"
+    },
+    {
+      "path": ".agents/skills/commit-convention/SKILL.md",
+      "template": "agents/skills/commit-convention/SKILL.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:b8a2608141eda174b954a54618ed6a98535f64b8af66a8ddec6516bb884cc831",
+      "owner": "agent",
+      "lastTemplateHash": "sha256:6d712d57a1a5f6438fe3b8b46a4cc08e7fc8f9ba5567c540ee10054d56d6cde2"
+    },
+    {
+      "path": ".agents/skills/defer-work/SKILL.md",
+      "template": "agents/skills/defer-work/SKILL.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:c3deb8b805bbd535b6ac7c20f735adceda294be38055c3e5008f441e414995f6",
+      "owner": "agent",
+      "lastTemplateHash": "sha256:bf3e8509255051789a92f5752f24d33c744e0555efa7b4e0dcf77eb6f221c1ba"
+    },
+    {
+      "path": ".agents/skills/resurface-deferred-work/SKILL.md",
+      "template": "agents/skills/resurface-deferred-work/SKILL.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:8a5674d5fbcfa47bb9b4c594309c5ad38b25eb6c3a0248308ab65d42755c6606",
+      "owner": "agent",
+      "lastTemplateHash": "sha256:2f71619894f374e5d363b9299c6ee7da1d3b11550fbc4a238bfaa3153de81030"
+    },
+    {
+      "path": ".agents/skills/recording-decisions/SKILL.md",
+      "template": "agents/skills/recording-decisions/SKILL.md",
+      "templateVersion": "0.3.4",
+      "hash": "sha256:9a0a970abc6788a4640adaaa0e05ced7528940479cc799f0dca256d4d6f4982b",
+      "owner": "agent",
+      "lastTemplateHash": "sha256:541536f3157e7c3d58d0d5a5e3077e84a335e6a71837cac24c356018af579d8d"
+    }
+  ]
+}

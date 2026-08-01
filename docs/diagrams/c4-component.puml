@@ -1,0 +1,53 @@
+@startuml c4-component
+!include <C4/C4_Component>
+
+' repo-map-synced: ab417c09eeaab2a3f791a6083d52bad0481cf1d0
+
+title HIIT Timer — Component Diagram
+
+Container_Boundary(app, "HIIT Timer PWA (React 19 + Vite 7, client-side)") {
+
+  Component(app, "App", "createHashRouter + RouterProvider", "Route wiring: /, /new, /workout/:id; hash routing; * → / redirect")
+
+  Component(screens, "Screens", "React components", "Route-level UI")
+  Component(workoutList, "WorkoutListScreen", "React + useLiveQuery", "Workout library: list, swipe-to-delete, empty state")
+  Component(createWorkout, "CreateWorkoutScreen", "React", "Round editor form: name, prepare delay, rounds, live estimate")
+  Component(workoutScreen, "WorkoutScreen", "React", "Loads workout by id; keyed runner remount")
+  Component(runner, "WorkoutRunner", "React", "Run screen composition: phase panels, quit blocker, wake lock, markUsed")
+
+  Component(components, "Feature components", "React", "TimerDisplay, ProgressBar, ControlButtons, PreStartPanel, CompletePanel, RoundCard, WorkoutCard, SwipeToDelete, ConfirmSheet, EmptyState")
+  Component(ui, "ui/ + form/", "shadcn/ui + Radix", "button, slider, switch, circular-progress; TextField, PresetChips, SegmentedToggle, StepperRow")
+
+  Component(timerHook, "useWorkoutTimer", "React hook", "Timer state machine idle/prep/work/rest/cooldown/done; 1s interval; cues; reps count-up")
+  Component(wakeLockHook, "useWakeLock", "React hook", "Screen wake lock while active && running; visibilitychange re-acquire")
+
+  Component(lib, "lib/", "pure TS functions", "cues (speech), duration, phaseView, relativeTime, utils")
+
+  Component(repo, "workoutRepo", "Dexie CRUD", "list/get/create/markUsed/delete; sortByRecency; order renumbering")
+  Component(seed, "applySeeds + seeds", "Dexie transaction", "VIP-zone ready handler; one-time seed delivery with markers")
+  Component(db, "db (HiitDB)", "Dexie 4", "IndexedDB: workouts (v1), appliedSeeds (v2)")
+
+  Rel(app, screens, "renders")
+  Rel(screens, components, "compose")
+  Rel(screens, ui, "compose")
+  Rel(components, ui, "compose")
+  Rel(screens, timerHook, "use")
+  Rel(runner, wakeLockHook, "use")
+  Rel(timerHook, lib, "call")
+  Rel(components, lib, "call")
+  Rel(screens, repo, "call")
+  Rel(runner, repo, "markUsed")
+  Rel(repo, db, "CRUD")
+  Rel(db, seed, "ready hook")
+  Rel(seed, db, "transaction")
+}
+
+System_Ext(browser, "Browser APIs", "IndexedDB, Web Speech API, Screen Wake Lock API")
+System_Ext(fonts, "Google Fonts", "Barlow, Barlow Condensed (SW-cached, CacheFirst)")
+
+Rel(db, browser, "IndexedDB storage")
+Rel(lib, browser, "speechSynthesis (cancel + speak)")
+Rel(wakeLockHook, browser, "wakeLock.request('screen')")
+Rel(app, fonts, "CSS @import")
+
+@enduml
